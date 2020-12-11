@@ -65,3 +65,29 @@ proc generate*(pc: var PasswordCreator; length = 8; quality: PasswordQuality = A
     if not forceQuality or pc.isGood(quality):
       return pc.password
 
+
+
+when isMainModule:
+  ## when compiled as main module just create a password
+  import strutils
+  stdout.write "Password length: "
+  let pwLen = stdin.readLine.strip.parseInt
+  stdout.write "Quality: \n"
+  for i, val in toStrSeq[PasswordQuality]():
+    echo " ", i, " ", val
+  let pwQual = cast[PasswordQuality](stdin.readLine.strip.parseInt)
+  stdout.write "Force quality? [y/N]: "
+  let pwForceQual = stdin.readLine.strip.toLowerAscii.startsWith("y")
+  stdout.write "Exclude Signs (eg: abc$#5): "
+  let pwExclude = stdin.readLine.strip.toCharSet
+  var pc: PasswordCreator
+  echo "Passwords:"
+  while true:
+    stdout.write "  ", pc.generate(pwLen, pwQual, pwForceQual, pwExclude), " "
+    discard stdin.readLine
+
+  
+
+
+
+
