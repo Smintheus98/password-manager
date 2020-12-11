@@ -73,8 +73,8 @@ when isMainModule:
   stdout.write "Password length: "
   let pwLen = stdin.readLine.strip.parseInt
   stdout.write "Quality: \n"
-  for i, val in toStrSeq[PasswordQuality]():
-    echo " ", i, " ", val
+  for i in PasswordQuality:
+    echo " ", i.int, " ", i
   let pwQual = cast[PasswordQuality](stdin.readLine.strip.parseInt)
   stdout.write "Force quality? [y/N]: "
   let pwForceQual = stdin.readLine.strip.toLowerAscii.startsWith("y")
