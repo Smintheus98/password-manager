@@ -1,3 +1,6 @@
+## This module implements a structure to store login data 
+## and procedures to work with them.
+
 import strutils, sequtils
 
 type Login* = object

@@ -1,10 +1,10 @@
-## This module serves the generation of random passwords
+## This module serves the generation of random passwords.
 
 import random
 import myutils
 
 const
-  ## Set definitions for different password standards
+  ## Set definitions for different password standards.
   alpha_lower*: set[char] = { 'a' .. 'z' }
   alpha_upper*: set[char] = { 'A' .. 'Z' }
   digits*:      set[char] = { '0' .. '9' }
@@ -15,23 +15,23 @@ const
 
 
 type PasswordCreator* = object
-  ## Password creator type
+  ## Password creator type.
   password*: string
 
 type PasswordQuality* = enum
-  ## Enumeration type to specify the characters to use for password generation
+  ## Enumeration type to specify the characters to use for password generation.
   ALPHALOWER, ALPHAUPPER, ALPHA, ALPHANUM, ALPHANUMSYM
 
 
 proc containsOneOf*(password: string; selection: set[char]): bool =
-  ## Tests if the `password` string contains at least one of the elements in `selection`
+  ## Tests if the `password` string contains at least one of the elements in `selection`.
   for ch in password:
     if ch in selection:
       return true
   return false
 
 proc isGood*(pc: PasswordCreator; quality: PasswordQuality): bool =
-  ## Tests if the (generated) password fulfills the required quality
+  ## Tests if the (generated) password fulfills the required quality.
   let pw = pc.password
   case quality:
     of ALPHALOWER:  return  pw.containsOneOf(alpha_lower)
@@ -48,7 +48,7 @@ proc isGood*(pc: PasswordCreator; quality: PasswordQuality): bool =
 
 proc generate*(pc: var PasswordCreator; length = 8; quality: PasswordQuality = ALPHANUMSYM;
         forceQuality = false; exclude: set[char] = {}): string =
-  ## Generates random password
+  ## Generates random password.
   randomize()
   var signs: set[char]
   case quality:
@@ -68,7 +68,7 @@ proc generate*(pc: var PasswordCreator; length = 8; quality: PasswordQuality = A
 
 
 when isMainModule:
-  ## when compiled as main module just create a password
+  ## when compiled as main module just create a password.
   import strutils
   stdout.write "Password length: "
   let pwLen = stdin.readLine.strip.parseInt
@@ -85,9 +85,4 @@ when isMainModule:
   while true:
     stdout.write "  ", pc.generate(pwLen, pwQual, pwForceQual, pwExclude), " "
     discard stdin.readLine
-
-  
-
-
-
 
