@@ -16,7 +16,7 @@ proc getStrInput*(indent: int; prompt: string; inline: bool = true): string =
     stdout.write(spacing, prompt, " = ")
   else:
     echo(spacing, prompt, ":")
-    stdout.write(spacing, " > ")
+    stdout.write(spacing, "> ")
   return stdin.readLine.strip
 
 proc getNumInput*(indent: int; prompt: string; onlyPositive = false, inline: bool = true): int =
