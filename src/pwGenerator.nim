@@ -58,11 +58,12 @@ proc generate*(pc: var PasswordCreator; length = 8; quality: PasswordQuality = A
     of ALPHANUM:    signs = alphanum
     of ALPHANUMSYM: signs = alphanumsym
   signs = signs - exclude
+  let ignoreForceQuality = length < 1 or length < quality.ord
   while true:
     pc.password = ""
     for i in 0..<length:
       pc.password &= sample(signs)
-    if not forceQuality or pc.isGood(quality):
+    if not forceQuality or pc.isGood(quality) or ignoreForceQuality:
       return pc.password
 
 
