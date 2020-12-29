@@ -4,11 +4,13 @@
 import strutils, strformat
 
 proc getSpacing(size: int): string =
+  ## Returns indent as string for given indentation size
   result = ""
   for i in 0..<size:
     result &= " "
 
 proc getStrInput*(indent: int; prompt: string; inline: bool = true): string =
+  ## Get user input (string) to a given prompt
   let spacing = getSpacing(indent)
   if inline:
     stdout.write(spacing, prompt, " = ")
@@ -18,6 +20,7 @@ proc getStrInput*(indent: int; prompt: string; inline: bool = true): string =
   return stdin.readLine.strip
 
 proc getNumInput*(indent: int; prompt: string; onlyPositive = false, inline: bool = true): int =
+  ## Get user input (integer) to a given prompt
   let spacing = getSpacing(indent)
   while true:
     if inline:
@@ -34,6 +37,7 @@ proc getNumInput*(indent: int; prompt: string; onlyPositive = false, inline: boo
       continue
 
 proc getConfirm*(indent: int, question: string, preferNo = true): bool =
+  ## Get user input (bool) to a given question
   let spacing = getSpacing(indent)
   stdout.write(spacing, question)
   if preferNo:
@@ -44,6 +48,7 @@ proc getConfirm*(indent: int, question: string, preferNo = true): bool =
     return not stdin.readLine.strip.toLowerAscii.startsWith('n')
 
 proc getChoice*(indent: int, preInstruction = "", options: openArray[string]): int =
+  ## Get user input (integer) indicating one of the given options
   let spacing = getSpacing(indent)
   let optionspacing = spacing & "  "
   while true:
