@@ -1,5 +1,11 @@
-BUILDDIR=bin
+CC=nim
+SRCDIR=src
+OUTDIR=bin
 
-compile:
-	mkdir -p $(BUILDDIR)
-	nim c --outdir:bin src/pwGenerator.nim
+build:
+	mkdir -p $(OUTDIR)
+	$(CC) c --outdir:$(OUTDIR) $(SRCDIR)/main.nim
+
+generator:
+	mkdir -p $(OUTDIR)
+	$(CC) c --outdir:$(OUTDIR) $(SRCDIR)/pwGenerator.nim
