@@ -1,34 +1,42 @@
-import tables, strutils, strformat
+import tables, strutils, strformat, sequtils
 import myutils, interactionutils, pwGenerator, login, loginManager
 
-type choice = enum
-  EXIT,
-  PRINT_HELP,
-  LIST_LOGINS,
-  SHOW_LOGIN,
-  ADD_LOGIN,
-  ADD_PASSWORD,
-  CHANGE_LOGIN,
+#type choice = enum
+#  EXIT,
+#  PRINT_HELP,
+#  LIST_LOGINS,
+#  SHOW_LOGIN,
+#  ADD_LOGIN,
+#  ADD_PASSWORD,
+#  CHANGE_LOGIN,
+#
+#let desciption = {
+#  choice.EXIT         : "Exit",
+#  choice.PRINT_HELP   : "Print Help Message",
+#  choice.LIST_LOGINS  : "List Logins",
+#  choice.SHOW_LOGIN   : "Show Specific Login",
+#  choice.ADD_LOGIN    : "Add New Login",
+#  choice.ADD_PASSWORD : "Add New Password",
+#  choice.CHANGE_LOGIN : "Change Login Data",
+#  }.toTable
 
-let desciption = {
-  choice.EXIT         : "Exit",
-  choice.PRINT_HELP   : "Print Help Message",
-  choice.LIST_LOGINS  : "List Logins",
-  choice.SHOW_LOGIN   : "Show Specific Login",
-  choice.ADD_LOGIN    : "Add New Login",
-  choice.ADD_PASSWORD : "Add New Password",
-  choice.CHANGE_LOGIN : "Change Login Data",
-  }.toTable
-
+let interfaceOptions: seq[string] = @["Exit",
+    "Print Help Message",
+    "List Logins",
+    "Show Specific Login",
+    "Add New Login",
+    "Add New Password",
+    "Change Login Data"]
 
 type Action* = object
   pwCreator*: PasswordCreator
   pwManager*: LoginManager
 
-proc printMenu*(action: Action) =
-  echo "Menu:"
-  for ch in choice:
-    echo &"\n({ch.int}) {desciption[ch]}"
+
+#proc printMenu*(action: Action) =
+#  echo "Menu:"
+#  for ch in choice:
+#    echo &"({ch.int}) {desciption[ch]}"
 
 proc listLogins*(action: Action) =
   echo action.pwManager.getLogins
@@ -83,11 +91,10 @@ proc addPassword*(action: Action) =
   discard
 proc changeLogin*(action: Action) =
   discard
-proc interactive*(action: Action) =
+proc interactive*(action: var Action) =
   while true:
-    action.printMenu
-    echo "> "
-    let line = stdin.readLine
+    let opt = getChoice(0, "Menu", interfaceOptions)
+
     # process commandline
 #void print_menu();
 #void exit();
@@ -99,3 +106,8 @@ proc interactive*(action: Action) =
 #public:
 #void start_interactive();
 #bool process_commandline(std::vector<std::string> argv);
+
+when isMainModule:
+  var action: Action
+  # read passwordmanager
+  interactive(action)
