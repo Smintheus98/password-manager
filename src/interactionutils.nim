@@ -35,6 +35,7 @@ proc getNumInput*(indent: int; prompt: string; onlyPositive = false, inline: boo
     except ValueError:
       echo "Give Numerical Value" & (if onlyPositive: " Greater Than 0" else: "")
       continue
+    return
 
 proc getConfirm*(indent: int, question: string, preferNo = true): bool =
   ## Get user input (bool) to a given question
@@ -47,7 +48,7 @@ proc getConfirm*(indent: int, question: string, preferNo = true): bool =
     stdout.write("[Y/n]: ")
     return not stdin.readLine.strip.toLowerAscii.startsWith('n')
 
-proc getChoice*(indent: int, preInstruction = "", options: openArray[string]): int =
+proc getChoice*(indent: int, preInstruction = "", options: openArray[string]; leadingZeros: bool = true): int =
   ## Get user input (integer) indicating one of the given options
   let spacing = getSpacing(indent)
   let optionspacing = spacing & "  "
@@ -55,7 +56,10 @@ proc getChoice*(indent: int, preInstruction = "", options: openArray[string]): i
     if preInstruction != "":
       echo(spacing, preInstruction, ":")
     for index, option in options:
-      echo(optionspacing, &"({index+1:>02}) ", option)
+      if leadingZeros:
+        echo(optionspacing, &"({index+1:>02}) ", option)
+      else:
+        echo(optionspacing, &"({index+1}) ", option)
     stdout.write(spacing, "> ")
     try:
       result = stdin.readLine.strip.parseInt
@@ -66,3 +70,4 @@ proc getChoice*(indent: int, preInstruction = "", options: openArray[string]): i
       echo(spacing, "Give Numerical Value Of {", 1, ",", options.len, "}")
       continue
     result.dec
+    return
