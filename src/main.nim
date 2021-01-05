@@ -1,45 +1,34 @@
 import tables, strutils, strformat, sequtils
 import myutils, interactionutils, pwGenerator, login, loginManager
 
-#type choice = enum
-#  EXIT,
-#  PRINT_HELP,
-#  LIST_LOGINS,
-#  SHOW_LOGIN,
-#  ADD_LOGIN,
-#  ADD_PASSWORD,
-#  CHANGE_LOGIN,
-#
-#let desciption = {
-#  choice.EXIT         : "Exit",
-#  choice.PRINT_HELP   : "Print Help Message",
-#  choice.LIST_LOGINS  : "List Logins",
-#  choice.SHOW_LOGIN   : "Show Specific Login",
-#  choice.ADD_LOGIN    : "Add New Login",
-#  choice.ADD_PASSWORD : "Add New Password",
-#  choice.CHANGE_LOGIN : "Change Login Data",
-#  }.toTable
+type interfaceOptions_e = enum
+  EXIT,
+  LIST_LOGINS,
+  SHOW_LOGIN,
+  ADD_LOGIN,
+  ADD_PASSWORD,
+  CHANGE_LOGIN,
 
-let interfaceOptions: seq[string] = @["Exit",
-    "Print Help Message",
+let interfaceOptions: seq[string] = @[
+    "Exit",
     "List Logins",
     "Show Specific Login",
     "Add New Login",
     "Add New Password",
     "Change Login Data"]
 
+doAssert(interfaceOptions_e.high.ord == interfaceOptions.high)
+
 type Action* = object
   pwCreator*: PasswordCreator
   pwManager*: LoginManager
 
 
-#proc printMenu*(action: Action) =
-#  echo "Menu:"
-#  for ch in choice:
-#    echo &"({ch.int}) {desciption[ch]}"
-
 proc listLogins*(action: Action) =
   echo action.pwManager.getLogins
+
+proc showLogin*(action: Action) =
+  discard
 
 proc addLogin*(action: var Action) =
   echo "New Login:"
@@ -89,14 +78,28 @@ proc addLogin*(action: var Action) =
   
 proc addPassword*(action: Action) =
   discard
+
 proc changeLogin*(action: Action) =
   discard
+
 proc interactive*(action: var Action) =
   while true:
-    let opt = getChoice(0, "Menu", interfaceOptions)
+    let option = getChoice(0, "Menu", interfaceOptions, false)
+    case cast[interfaceOptions_e](option):
+      of interfaceOptions_e.EXIT: 
+        break
+      of interfaceOptions_e.LIST_LOGINS:
+        action.listLogins()
+      of interfaceOptions_e.SHOW_LOGIN:
+        action.showLogin()
+      of interfaceOptions_e.ADD_LOGIN:
+        action.addLogin()
+      of interfaceOptions_e.ADD_PASSWORD:
+        action.addPassword()
+      of interfaceOptions_e.CHANGE_LOGIN:
+        action.changeLogin()
 
     # process commandline
-#void print_menu();
 #void exit();
 #void print_help();
 #void list_logins();
