@@ -1,5 +1,5 @@
 import tables, strutils, strformat, sequtils
-import myutils, interactionutils, pwGenerator, login, loginManager
+import myutils, menuutils, pwGenerator, login, loginManager
 
 type interfaceOptions_e = enum
   EXIT,
@@ -15,7 +15,8 @@ let interfaceOptions: seq[string] = @[
     "Show Specific Login",
     "Add New Login",
     "Add New Password",
-    "Change Login Data"]
+    "Change Login Data"
+]
 
 doAssert(interfaceOptions_e.high.ord == interfaceOptions.high)
 
