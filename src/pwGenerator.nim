@@ -76,7 +76,7 @@ when isMainModule:
   stdout.write "Quality: \n"
   for i in PasswordQuality:
     echo " ", i.int, " ", i
-  let pwQual = cast[PasswordQuality](stdin.readLine.strip.parseInt)
+  let pwQual = PasswordQuality(stdin.readLine.strip.parseInt)
   stdout.write "Force quality? [y/N]: "
   let pwForceQual = stdin.readLine.strip.toLowerAscii.startsWith("y")
   stdout.write "Exclude Signs (eg: abc$#5): "

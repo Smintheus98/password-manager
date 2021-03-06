@@ -44,7 +44,7 @@ proc addLogin*(action: var Action) =
   if pwCreationChoice == 0:
     # Generate
     let length = getNumInput(2, "Password Length", true)
-    let quality = cast[PasswordQuality](getChoice(2, "Password Quality", toStrSeq[PasswordQuality]()))
+    let quality = PasswordQuality(getChoice(2, "Password Quality", toStrSeq[PasswordQuality]()))
     let forceQuality = getConfirm(2, "Force Quality?") 
     let excludeSymbols = getStrInput(2, "Symbols to exclude").toCharSet
 
@@ -86,7 +86,7 @@ proc changeLogin*(action: Action) =
 proc interactive*(action: var Action) =
   while true:
     let option = getChoice(0, "Menu", interfaceOptions, false)
-    case cast[interfaceOptions_e](option):
+    case interfaceOptions_e(option):
       of interfaceOptions_e.EXIT: 
         break
       of interfaceOptions_e.LIST_LOGINS:
